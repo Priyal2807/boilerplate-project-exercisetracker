@@ -7,8 +7,9 @@ const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+const MONGO_URI = process.env.db;
 
-mongoose.connect("mongodb+srv://new-user-1:2AjwdB3rsxNNBbKN@democluster.jix3s.mongodb.net/fcc?retryWrites=true&w=majority",
+mongoose.connect(MONGO_URI,
     () => {
         console.log("connected successfully");
     })
