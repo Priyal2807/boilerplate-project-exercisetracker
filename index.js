@@ -81,8 +81,8 @@ app.get('/api/users/:id/logs', (req, res) => {
     let from = req.query.from;
     let to = req.query.to;
     let limit = parseInt(req.query.limit);
-   
-    if (from === undefined && to === undefined && limit === undefined) {
+  
+    if (Object.keys(req.query).length === 0) {
         User.findById(id, (err, foundUser) => {
             let count = foundUser.log.length;
             return res.send({ userName: foundUser.userName, count: count, "_id": id, log: foundUser.log })
