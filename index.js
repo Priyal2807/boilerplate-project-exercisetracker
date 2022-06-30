@@ -81,33 +81,29 @@ app.get('/api/users/:id/logs', (req, res) => {
     let from = req.query.from;
     let to = req.query.to;
     let limit = parseInt(req.query.limit);
+    let arr = []
   
+    User.findById(id, (err, foundUser) => {
     if (Object.keys(req.query).length === 0) {
-        User.findById(id, (err, foundUser) => {
+        
             let count = foundUser.log.length;
             return res.send({ userName: foundUser.userName, count: count, "_id": id, log: foundUser.log })
-        })
-    } else {
-        from = new Date(from)
-        to = new Date(to)
-        User.findById(id, (err, foundUser) => {
-            let arr = []
-            let cnt = 0;
-            console.log(from);
-            console.log(to);
-            for (let i = 0; i < foundUser.log.length; i++) {
-                let dt = new Date(foundUser.log[i].date)
-                if (dt > from && dt < to) {
-                    arr.push(foundUser.log[i]);
-                    cnt++;
-                }
-                if (cnt === limit)
-                    break;
-            }
-            console.log(cnt);
-            return res.send({ userName: foundUser.userName, count: limit, "_id": id, log: arr })
-        })
+        
     }
+    if (from)
+    {
+        arr = foundUser.log.filter((i) => new Date(i.date) >= new Date(from))
+    }
+    if (to) {
+        arr = foundUser.log.filter((i) => new Date(i.date) >= new Date(to))
+    }
+    if (limit)
+    {
+        arr = foundUser.log.slice(0, limit);
+    }
+    return res.send({ userName: foundUser.userName, count: limit, "_id": id, log: arr })
+
+    })
 
 })
 
