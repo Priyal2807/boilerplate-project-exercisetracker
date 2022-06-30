@@ -101,7 +101,7 @@ app.get('/api/users/:id/logs', (req, res) => {
     {
         arr = foundUser.log.slice(0, limit);
     }
-    return res.send({ userName: foundUser.userName, count: limit, "_id": id, log: arr })
+    return res.send({ userName: foundUser.userName, count: arr.length, "_id": id, log: arr })
 
     })
 
